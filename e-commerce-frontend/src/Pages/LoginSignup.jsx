@@ -12,7 +12,7 @@ const LoginSignup = () => {
 
   const login = async () => {
     let dataObj;
-    await fetch('https://ecommerce-backend-w15r.onrender.com/login', {
+    await fetch('https://ecommerce-backend-z6lf.onrender.com/login', {
       method: 'POST',
       headers: {
         Accept:'application/form-data',
@@ -35,7 +35,7 @@ const LoginSignup = () => {
 
   const signup = async () => {
     let dataObj;
-    await fetch('https://ecommerce-backend-w15r.onrender.com/signup', {
+    await fetch('https://ecommerce-backend-z6lf.onrender.com/signup', {
       method: 'POST',
       headers: {
         Accept:'application/form-data',
