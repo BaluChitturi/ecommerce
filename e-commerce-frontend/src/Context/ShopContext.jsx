@@ -17,13 +17,13 @@ const ShopContextProvider = (props) => {
 
   useEffect(() => {
     // Fetch products from the live backend
-    fetch('https://ecommerce-backend-w15r.onrender.com/allproducts') 
+    fetch('https://ecommerce-backend-z6lf.onrender.com/allproducts') 
       .then((res) => res.json()) 
       .then((data) => setProducts(data));
 
     // Fetch cart items if user is authenticated
     if (localStorage.getItem("auth-token")) {
-      fetch('https://ecommerce-backend-w15r.onrender.com/getcart', {
+      fetch('https://ecommerce-backend-z6lf.onrender.com/getcart', {
         method: 'POST',
         headers: {
           Accept: 'application/form-data',
@@ -64,7 +64,7 @@ const ShopContextProvider = (props) => {
 
     // Add to cart in the live backend
     if (localStorage.getItem("auth-token")) {
-      fetch('https://ecommerce-backend-w15r.onrender.com/addtocart', {
+      fetch('https://ecommerce-backend-z6lf.onrender.com/addtocart', {
         method: 'POST',
         headers: {
           Accept: 'application/form-data',
@@ -83,7 +83,7 @@ const ShopContextProvider = (props) => {
 
     // Remove from cart in the live backend
     if (localStorage.getItem("auth-token")) {
-      fetch('https://ecommerce-backend-w15r.onrender.com/removefromcart', {
+      fetch('https://ecommerce-backend-z6lf.onrender.com/removefromcart', {
         method: 'POST',
         headers: {
           Accept: 'application/form-data',
