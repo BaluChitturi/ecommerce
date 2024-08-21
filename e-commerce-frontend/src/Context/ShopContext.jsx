@@ -4,7 +4,6 @@ export const ShopContext = createContext(null);
 
 const ShopContextProvider = (props) => {
   const [products, setProducts] = useState([]);
-  const [cartItems, setCartItems] = useState(getDefaultCart());
 
   const getDefaultCart = () => {
     let cart = {};
@@ -14,29 +13,29 @@ const ShopContextProvider = (props) => {
     return cart;
   };
 
+  const [cartItems, setCartItems] = useState(getDefaultCart());
+
   useEffect(() => {
     // Fetch products from the live backend
-    fetch('https://ecommerce-backend-w15r.onrender.com/allproducts')
-      .then((res) => res.json())
-      .then((data) => setProducts(data))
-      .catch((error) => console.error('Error fetching products:', error));
+    fetch('https://ecommerce-backend-w15r.onrender.com/allproducts') 
+      .then((res) => res.json()) 
+      .then((data) => setProducts(data));
 
     // Fetch cart items if user is authenticated
-    const token = localStorage.getItem("auth-token");
-    if (token) {
+    if (localStorage.getItem("auth-token")) {
       fetch('https://ecommerce-backend-w15r.onrender.com/getcart', {
         method: 'POST',
         headers: {
-          'Accept': 'application/json',
-          'auth-token': token,
+          Accept: 'application/form-data',
+          'auth-token': `${localStorage.getItem("auth-token")}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({}), // Empty body is fine here
+        body: JSON.stringify(),
       })
       .then((resp) => resp.json())
-      .then((data) => setCartItems(data))
-      .catch((error) => console.error('Error fetching cart items:', error));
+      .then((data) => setCartItems(data));
     }
+
   }, []);
 
   const getTotalCartAmount = () => {
@@ -44,9 +43,7 @@ const ShopContextProvider = (props) => {
     for (const item in cartItems) {
       if (cartItems[item] > 0) {
         let itemInfo = products.find((product) => product.id === Number(item));
-        if (itemInfo) {
-          totalAmount += cartItems[item] * itemInfo.new_price;
-        }
+        totalAmount += cartItems[item] * itemInfo.new_price;
       }
     }
     return totalAmount;
@@ -65,40 +62,38 @@ const ShopContextProvider = (props) => {
   const addToCart = (itemId) => {
     setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
 
-    const token = localStorage.getItem("auth-token");
-    if (token) {
+    // Add to cart in the live backend
+    if (localStorage.getItem("auth-token")) {
       fetch('https://ecommerce-backend-w15r.onrender.com/addtocart', {
         method: 'POST',
         headers: {
-          'Accept': 'application/json',
-          'auth-token': token,
+          Accept: 'application/form-data',
+          'auth-token': `${localStorage.getItem("auth-token")}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ itemId }),
+        body: JSON.stringify({ "itemId": itemId }),
       })
       .then((resp) => resp.json())
-      .then((data) => console.log('Added to cart:', data))
-      .catch((error) => console.error('Error adding to cart:', error));
+      .then((data) => { console.log(data) });
     }
   };
 
   const removeFromCart = (itemId) => {
     setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
 
-    const token = localStorage.getItem("auth-token");
-    if (token) {
+    // Remove from cart in the live backend
+    if (localStorage.getItem("auth-token")) {
       fetch('https://ecommerce-backend-w15r.onrender.com/removefromcart', {
         method: 'POST',
         headers: {
-          'Accept': 'application/json',
-          'auth-token': token,
+          Accept: 'application/form-data',
+          'auth-token': `${localStorage.getItem("auth-token")}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ itemId }),
+        body: JSON.stringify({ "itemId": itemId }),
       })
       .then((resp) => resp.json())
-      .then((data) => console.log('Removed from cart:', data))
-      .catch((error) => console.error('Error removing from cart:', error));
+      .then((data) => { console.log(data) });
     }
   };
 
