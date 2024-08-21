@@ -10,7 +10,7 @@ const ShopCategory = (props) => {
   const [error, setError] = useState(null);
 
   const fetchInfo = () => {
-    fetch('https://ecommerce-backend-w15r.onrender.com/allproducts')
+    fetch('https://ecommerce-backend-z6lf.onrender.com/allproducts')
       .then((res) => {
         if (!res.ok) {
           throw new Error('Network response was not ok');
